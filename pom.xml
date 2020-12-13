@@ -10,11 +10,11 @@
     </parent>
 
     <groupId>griezma.mssc</groupId>
-    <artifactId>mssc-beerworks-bom</artifactId>
+    <artifactId>mssc-beerworks-parent</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
-    <name>mssc-beerworks-bom</name>
-    <description>MSSC Beerworks BOM</description>
+
+    <description>Common parent project for MSSC Beer Works</description>
 
     <properties>
         <java.version>11</java.version>
@@ -118,6 +118,18 @@
                         </compilerArg>
                     </compilerArgs>
                 </configuration>
+            </plugin>
+            <plugin>
+                <artifactId>maven-clean-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>auto-clean</id>
+                        <phase>initialize</phase>
+                        <goals>
+                            <goal>clean</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
