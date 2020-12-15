@@ -63,10 +63,6 @@
             <artifactId>spring-boot-starter-cache</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.ehcache</groupId>
-            <artifactId>ehcache</artifactId>
-        </dependency>
-        <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
             <scope>runtime</scope>
@@ -75,6 +71,10 @@
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
             <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.ehcache</groupId>
+            <artifactId>ehcache</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -119,7 +119,7 @@
                     </compilerArgs>
                 </configuration>
             </plugin>
-            <plugin>
+            <!--<plugin>
                 <artifactId>maven-clean-plugin</artifactId>
                 <executions>
                     <execution>
@@ -130,8 +130,29 @@
                         </goals>
                     </execution>
                 </executions>
-            </plugin>
+            </plugin>-->
         </plugins>
     </build>
 
+    <repositories>
+        <repository>
+            <id>central</id>
+            <url>https://repo1.maven.org/maven2</url>
+            <releases><enabled>true</enabled></releases>
+            <snapshots><enabled>true</enabled></snapshots>
+        </repository>
+        <repository>
+            <id>github</id>
+            <name>GitHub Packages Repo</name>
+            <url>https://maven.pkg.github.com/griezma/mssc-beerworks</url>
+        </repository>
+    </repositories>
+
+    <distributionManagement>
+        <repository>
+            <id>github</id>
+            <name>GitHub Packages Repo</name>
+            <url>https://maven.pkg.github.com/griezma/mssc-beerworks</url>
+        </repository>
+    </distributionManagement>
 </project>
