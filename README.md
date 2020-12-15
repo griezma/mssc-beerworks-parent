@@ -1,5 +1,5 @@
 # MSSC Beerworks Parent
 
-https://github.com/griezma/mssc-beerworks/workflows/publish-package/badge.svg
+![publish-package](https://github.com/griezma/mssc-beerworks/workflows/publish-package/badge.svg)
 
 Published to Github Packages
