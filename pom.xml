@@ -139,7 +139,7 @@
             <uniqueVersion>false</uniqueVersion>
             <id>github</id>
             <name>GitHub Beerworks</name>
-            <url>https://maven.pkg.github.com/griezma/mssc-beerworks</url>
+            <url>https://maven.pkg.github.com/griezma/mssc-beerworks-parent</url>
         </repository>
     </distributionManagement>
 </project>

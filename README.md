@@ -1,6 +1,6 @@
 # MSSC Beerworks Parent
 
-![publish-package](https://github.com/griezma/mssc-beerworks-parent/workflows/publish-package/badge.svg)
+[![publish-package](https://github.com/griezma/mssc-beerworks-parent/workflows/publish-package/badge.svg)](https://github.com/griezma/mssc-beerworks-parent/actions)
 
 This parent POM is published to Github Packages.
 
