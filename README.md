@@ -1,12 +1,12 @@
 # MSSC Beerworks Parent
 
-![publish-package](https://github.com/griezma/mssc-beerworks/workflows/publish-package/badge.svg)
+![publish-package](https://github.com/griezma/mssc-beerworks-parent/workflows/publish-package/badge.svg)
 
 This parent POM is published to Github Packages.
 
 To avoid having to [setup Maven ~/.m2/settings.xml appropriately](/.m2/settings.xml), start with
 ```
-git https://github.com/griezma/mssc-beerworks
+git https://github.com/griezma/mssc-beerworks-parent
 cd mssc-beerworks
 mvn install
 ```
