@@ -21,6 +21,7 @@
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <mapstruct.version>1.4.1.Final</mapstruct.version>
+        <spring-cloud.version>2020.0.0</spring-cloud.version>
         <spring-statemachine.version>2.2.1.RELEASE</spring-statemachine.version>
     </properties>
 
@@ -96,6 +97,13 @@
 
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${spring-cloud.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
             <dependency>
                 <groupId>org.springframework.statemachine</groupId>
                 <artifactId>spring-statemachine-bom</artifactId>
