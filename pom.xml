@@ -21,7 +21,7 @@
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <mapstruct.version>1.4.1.Final</mapstruct.version>
-        <spring-cloud.version>2020.0.0</spring-cloud.version>
+        <spring-cloud.version>2020.0.1</spring-cloud.version>
         <spring-statemachine.version>2.2.1.RELEASE</spring-statemachine.version>
         <docker.image.prefix>griezma</docker.image.prefix>
     </properties>

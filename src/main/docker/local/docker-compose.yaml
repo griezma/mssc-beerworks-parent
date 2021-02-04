@@ -1,0 +1,153 @@
+version: '3.9'
+volumes:
+    inventory-service-data:
+    beer-service-data:
+    beerorder-service-data:
+
+services:
+    jms:
+        image: vromero/activemq-artemis
+        ports:
+            - 8161:8161
+
+    zipkin:
+        image: openzipkin/zipkin
+        ports:
+            - 9411:9411
+
+    eureka:
+        image: mssc-beerworks-service-registry:${TAG}
+        depends_on:
+            - zipkin
+        ports:
+            - 8761:8761
+        env_file:
+            - ./mysql.env
+            - ./cloudconfig.env
+
+    configserver:
+        image: mssc-beerworks-config-service:${TAG}
+        depends_on:
+            - eureka
+        ports:
+            - 8888:8888
+        env_file:
+            - ./cloudconfig.env
+        environment:
+            - EUREKA_INSTANCE_PREFERIPADDRESS=true
+#            - logging_config=
+
+    inventory-service-db:
+        image: mysql:8
+        ports:
+            - 3308:3306
+        environment:
+            - MYSQL_DATABASE=inventory-service
+            - MYSQL_USER=inventory-service
+        env_file: ./mysql.env
+        volumes:
+            - inventory-service-data:/var/lib/mysql
+
+    inventory-service:
+        image: griezma/mssc-beer-inventory-service:${TAG}
+        depends_on:
+            - eureka
+            - configserver
+#            - inventory-service-db
+            - jms
+        ports:
+            - 8081:8081
+        env_file:
+            - ./cloudconfig.env
+            - ./h2db.env
+        environment:
+            - mysql_host=inventory-service-db
+#            - logging_config=
+        restart: unless-stopped
+#        deploy:
+#            resources:
+#                limits:
+#                    memory: 100M
+
+    inventory-failover:
+        image: griezma/mssc-beer-inventory-failover:${TAG}
+        depends_on:
+            - eureka
+        ports:
+            - 8083:8083
+        env_file:
+            - ./cloudconfig.env
+
+    beer-service-db:
+        image: mysql:8
+        ports:
+            - 3306:3306
+        environment:
+            - MYSQL_DATABASE=beer-service
+            - MYSQL_USER=beer-service
+        env_file: ./mysql.env
+        volumes:
+            - beer-service-data:/var/lib/mysql
+
+    beer-service:
+        image: griezma/mssc-beer-service:${TAG}
+        depends_on:
+            - eureka
+            - configserver
+            - jms
+#            - beer-service-db
+            - inventory-service
+        ports:
+            - 8080:8080
+        env_file:
+            - ./cloudconfig.env
+            - ./h2db.env
+        environment:
+            - MYSQL_HOST=beer-service-db
+#            - logging_config=
+        restart: unless-stopped
+
+    beerorder-service-db:
+        image: mysql:8
+        ports:
+            - 3307:3306
+        environment:
+            - MYSQL_DATABASE=beerorder-service
+            - MYSQL_USER=beerorder-service
+        env_file: ./mysql.env
+        volumes:
+            - beerorder-service-data:/var/lib/mysql
+
+    beer-order-service:
+        image: griezma/mssc-beer-order-service:${TAG}
+        depends_on:
+            - eureka
+            - configserver
+            - jms
+#            - beerorder-service-db
+            - beer-service
+        ports:
+            - 8082:8082
+        env_file:
+            - ./cloudconfig.env
+            - ./h2db.env
+        environment:
+            - MYSQL_HOST=beerorder-service-db
+            - BEERSERVICE_HOST=beer-service
+#            - logging_config=
+
+    gateway:
+        image: mssc-beerworks-gateway:${TAG}
+        depends_on:
+            - eureka
+            - inventory-service
+            - inventory-failover
+            - beer-service
+#            - beer-order-service
+        ports:
+            - 9090:9090
+        env_file:
+            - ./cloudconfig.env
+        environment:
+            - foo=
+#            - logging_config=
