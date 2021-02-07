@@ -5,6 +5,33 @@ volumes:
     beerorder-service-data:
 
 services:
+    elasticsearch:
+        image: elasticsearch:7.9.0
+        ports:
+            - 9200:9200
+        environment:
+            discovery.type: single-node
+
+    kibana:
+        image: docker.elastic.co/kibana/kibana:7.9.0
+        ports:
+            - 5601:5601
+        restart: on-failure
+        depends_on:
+            - elasticsearch
+
+    filebeat:
+        image: docker.elastic.co/beats/filebeat:7.9.0
+        command: filebeat -e -strict.perms=false
+        volumes:
+            - ./filebeat/filebeat.docker.yml:/usr/share/filebeat/filebeat.yml:ro
+            - /var/lib/docker/containers:/var/lib/docker/containers:ro
+            - /var/run/docker.sock:/var/run/docker.sock:ro
+        user: root
+        restart: on-failure
+        depends_on:
+            - elasticsearch
+
     jms:
         image: vromero/activemq-artemis
         ports:
@@ -67,14 +94,16 @@ services:
             - ./h2db.env
         environment:
             - mysql_host=inventory-service-db
-            - logging_config=
-            - logging_level_org_springframework_cloud=debug
+#            - logging_config=
+#            - logging_level_org_springframework_cloud=debug
         restart: on-failure
-        deploy:
-            resources:
-                limits:
-                    memory: 150m
-                    cpus: 1
+        labels:
+            collect_logs_with_filebeat: "true"
+#        deploy:
+#            resources:
+#                limits:
+#                    memory: 150m
+#                    cpus: 1
 
     inventory-failover:
         image: griezma/mssc-beer-inventory-failover:${TAG}
@@ -123,11 +152,11 @@ services:
             - MYSQL_HOST=beer-service-db
 #            - logging_config=
         restart: on-failure
-        deploy:
-            resources:
-                limits:
-                    memory: 150m
-                    cpus: 1
+#        deploy:
+#            resources:
+#                limits:
+#                    memory: 150m
+#                    cpus: 1
 
     beerorder-service-db:
         image: mysql:8
@@ -173,10 +202,12 @@ services:
         image: mssc-beerworks-gateway:${TAG}
         depends_on:
             - eureka
+            - kibana
+            - filebeat
             - inventory-service
-            - inventory-failover
-            - beer-service
-            - beer-order-service
+#            - inventory-failover
+#            - beer-service
+#            - beer-order-service
         ports:
             - 9090:9090
         env_file:
@@ -184,3 +215,5 @@ services:
         environment:
             - foo=
 #            - logging_config=
+        labels:
+            collect_logs_with_filebeat: "true"
