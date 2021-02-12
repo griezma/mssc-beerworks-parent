@@ -169,30 +169,49 @@
             </plugin>
 
             <plugin>
-                <groupId>io.fabric8</groupId>
-                <artifactId>docker-maven-plugin</artifactId>
-                <version>0.34.1</version>
+                <groupId>com.google.cloud.tools</groupId>
+                <artifactId>jib-maven-plugin</artifactId>
+                <version>2.7.1</version>
                 <configuration>
-                    <verbose>true</verbose>
-                    <images>
-                        <image>
-                            <name>${docker.image.prefix}/${project.artifactId}</name>
-                            <alias>${project.artifactId}</alias>
-                            <build>
-                                <assembly>
-                                    <descriptorRef>artifact</descriptorRef>
-                                </assembly>
-                                <dockerFile>Dockerfile</dockerFile>
-                                <tags>
-                                    <tag>latest</tag>
-                                    <tag>${project.version}</tag>
-                                </tags>
-                            </build>
-                        </image>
-                    </images>
+                    <to>
+                        <image>${project.artifactId}-jib:latest</image>
+                    </to>
                 </configuration>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>dockerBuild</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
-            <!--<plugin>
+
+<!--            <plugin>-->
+<!--                <groupId>io.fabric8</groupId>-->
+<!--                <artifactId>docker-maven-plugin</artifactId>-->
+<!--                <version>0.34.1</version>-->
+<!--                <configuration>-->
+<!--                    <verbose>true</verbose>-->
+<!--                    <images>-->
+<!--                        <image>-->
+<!--                            <name>${docker.image.prefix}/${project.artifactId}</name>-->
+<!--                            <alias>${project.artifactId}</alias>-->
+<!--                            <build>-->
+<!--                                <assembly>-->
+<!--                                    <descriptorRef>artifact</descriptorRef>-->
+<!--                                </assembly>-->
+<!--                                <dockerFile>Dockerfile</dockerFile>-->
+<!--                                <tags>-->
+<!--                                    <tag>latest</tag>-->
+<!--                                    <tag>${project.version}</tag>-->
+<!--                                </tags>-->
+<!--                            </build>-->
+<!--                        </image>-->
+<!--                    </images>-->
+<!--                </configuration>-->
+<!--            </plugin>-->
+            <plugin>
                 <artifactId>maven-clean-plugin</artifactId>
                 <executions>
                     <execution>
@@ -203,7 +222,7 @@
                         </goals>
                     </execution>
                 </executions>
-            </plugin>-->
+            </plugin>
         </plugins>
     </build>
 

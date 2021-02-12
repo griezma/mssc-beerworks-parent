@@ -1,10 +1,12 @@
 filebeat.autodiscover:
   providers:
     - type: docker
+      hints.enabled: true
+      labels.dedot: true
       templates:
         - condition:
             contains:
-              container.labels.collect_logs_with_filebeat: "true"
+              container.labels.beerworks_service_log: "true"
           config:
             - type: container
               format: docker
@@ -13,7 +15,7 @@ filebeat.autodiscover:
               processors:
                 - decode_json_fields:
                     when.equals:
-                      container.labels.collect_logs_with_filebeat: "true"
+                      docker.container.labels.beerworks_service_log: "true"
                     fields: ["message"]
                     target: ""
                     overwrite_keys: true
