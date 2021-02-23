@@ -24,7 +24,7 @@
         <spring-cloud.version>2020.0.1</spring-cloud.version>
         <spring-statemachine.version>2.2.1.RELEASE</spring-statemachine.version>
         <docker.image.prefix>griezma</docker.image.prefix>
-        <build-image.phase>package</build-image.phase>
+        <build-image.phase>none</build-image.phase>
     </properties>
 
     <dependencies>
