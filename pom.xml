@@ -24,6 +24,7 @@
         <spring-cloud.version>2020.0.1</spring-cloud.version>
         <spring-statemachine.version>2.2.1.RELEASE</spring-statemachine.version>
         <docker.image.prefix>griezma</docker.image.prefix>
+        <build-image.phase>package</build-image.phase>
     </properties>
 
     <dependencies>
@@ -179,7 +180,7 @@
                 </configuration>
                 <executions>
                     <execution>
-                        <phase>package</phase>
+                        <phase>${build-image.phase}</phase>
                         <goals>
                             <goal>dockerBuild</goal>
                         </goals>
@@ -187,30 +188,6 @@
                 </executions>
             </plugin>
 
-<!--            <plugin>-->
-<!--                <groupId>io.fabric8</groupId>-->
-<!--                <artifactId>docker-maven-plugin</artifactId>-->
-<!--                <version>0.34.1</version>-->
-<!--                <configuration>-->
-<!--                    <verbose>true</verbose>-->
-<!--                    <images>-->
-<!--                        <image>-->
-<!--                            <name>${docker.image.prefix}/${project.artifactId}</name>-->
-<!--                            <alias>${project.artifactId}</alias>-->
-<!--                            <build>-->
-<!--                                <assembly>-->
-<!--                                    <descriptorRef>artifact</descriptorRef>-->
-<!--                                </assembly>-->
-<!--                                <dockerFile>Dockerfile</dockerFile>-->
-<!--                                <tags>-->
-<!--                                    <tag>latest</tag>-->
-<!--                                    <tag>${project.version}</tag>-->
-<!--                                </tags>-->
-<!--                            </build>-->
-<!--                        </image>-->
-<!--                    </images>-->
-<!--                </configuration>-->
-<!--            </plugin>-->
             <plugin>
                 <artifactId>maven-clean-plugin</artifactId>
                 <executions>
@@ -225,6 +202,10 @@
             </plugin>
         </plugins>
     </build>
+
+    <profiles>
+
+    </profiles>
 
     <distributionManagement>
         <repository>
